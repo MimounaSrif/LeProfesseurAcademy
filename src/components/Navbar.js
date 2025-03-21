@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/professeur.jpg';
 
-function Navbar() {
+function Navbar({ language, setLanguage }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [language, setLanguage] = useState('Français');
   const [direction, setDirection] = useState('ltr');
 
   const toggleNavbar = () => {
@@ -40,7 +39,7 @@ function Navbar() {
       about: 'About',
       contact: 'Contact',
       faq: 'FAQ',
-      signup: 'Sign In',
+      signup: 'Sign Up',
       login: 'Log In'
     },
     Arabe: {
