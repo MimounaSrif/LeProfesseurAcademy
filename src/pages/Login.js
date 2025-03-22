@@ -1,14 +1,53 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import logo from '../assets/professeur.jpg';
 
-function Login() {
+function Login({ language = 'Français' }) {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const translations = {
+    Français: {
+      welcome: "Bienvenue à Le Professeur Academy !",
+      desc1: "Connectez-vous pour accéder à nos cours et ressources.",
+      desc2: "Nous sommes ravis de vous revoir parmi nos apprenants.",
+      login: "Se connecter",
+      email: "Adresse Email",
+      password: "Mot de passe",
+      forgotPassword: "Mot de passe oublié ?",
+      noAccount: "Vous n'avez pas de compte ?",
+      signup: "S'inscrire"
+    },
+    Anglais: {
+      welcome: "Welcome to Le Professeur Academy!",
+      desc1: "Log in to access our courses and resources.",
+      desc2: "We are happy to see you back among our learners.",
+      login: "Log In",
+      email: "Email Address",
+      password: "Password",
+      forgotPassword: "Forgot password?",
+      noAccount: "Don't have an account?",
+      signup: "Sign Up"
+    },
+    Arabe: {
+      welcome: "مرحبًا بكم في أكاديمية البروفيسور!",
+      desc1: "سجّل الدخول للوصول إلى دوراتنا ومواردنا.",
+      desc2: "نحن سعداء بعودتكم بين طلابنا.",
+      login: "تسجيل الدخول",
+      email: "البريد الإلكتروني",
+      password: "كلمة المرور",
+      forgotPassword: "هل نسيت كلمة المرور؟",
+      noAccount: "ليس لديك حساب؟",
+      signup: "التسجيل"
+    }
+  };
+
+  const t = translations[language];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,65 +76,71 @@ function Login() {
           ></div>
 
           {/* Texte à droite */}
-          <div className="col-md-6 d-flex flex-column justify-content-center align-items-start p-5">
-            <h2 className="mb-4">Bienvenue à Le Professeur Academy !</h2>
-            <p>Connectez-vous pour accéder à nos cours et ressources.</p>
-            <p>Nous sommes ravis de vous revoir parmi nos apprenants.</p>
+          <div className={`col-md-6 d-flex flex-column justify-content-center align-items-${language === 'Arabe' ? 'end' : 'start'} p-5`}>
+            <h2 className="mb-4">{t.welcome}</h2>
+            <p>{t.desc1}</p>
+            <p>{t.desc2}</p>
           </div>
         </div>
       </div>
 
       {/* Formulaire de connexion */}
       <div className="container my-5">
-        <h3 className="text-center mb-4">Se connecter</h3>
+        <h3 className="text-center mb-4">{t.login}</h3>
         <form onSubmit={handleSubmit} className="mx-auto" style={{ maxWidth: '600px' }}>
-          
           {/* Email */}
           <div className="mb-4">
             <label className="form-label mb-2">
-              <i className="bi bi-envelope-fill me-2 text-primary"></i> Adresse Email
+              <i className="bi bi-envelope-fill me-2 text-primary"></i> {t.email}
             </label>
-            <input 
-              type="email" 
-              className="form-control rounded-pill shadow-sm py-2" 
-              name="email" 
-              required 
-              onChange={handleChange} 
+            <input
+              type="email"
+              className="form-control rounded-pill shadow-sm py-2"
+              name="email"
+              required
+              onChange={handleChange}
+              style={{ direction: language === 'Arabe' ? 'rtl' : 'ltr' }}
             />
           </div>
 
           {/* Mot de passe */}
           <div className="mb-4">
             <label className="form-label mb-2">
-              <i className="bi bi-lock-fill me-2 text-primary"></i> Mot de passe
+              <i className="bi bi-lock-fill me-2 text-primary"></i> {t.password}
             </label>
-            <div className="input-group">
-              <input 
-                type={showPassword ? "text" : "password"} 
-                className="form-control rounded-start-pill shadow-sm py-2" 
-                name="password" 
-                required 
-                onChange={handleChange} 
+            <div className="position-relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="form-control rounded-pill shadow-sm py-2"
+                name="password"
+                required
+                onChange={handleChange}
+                style={{ direction: language === 'Arabe' ? 'rtl' : 'ltr', paddingRight: language === 'Arabe' ? '2.5rem' : '1rem', paddingLeft: language === 'Arabe' ? '1rem' : '2.5rem' }}
               />
-              <button 
-                type="button"
-                className="btn btn-outline-secondary rounded-end-pill"
-                style={{ padding: '0.375rem 0.75rem', display: 'flex', alignItems: 'center' }}
+              <span
                 onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  cursor: 'pointer',
+                  [language === 'Arabe' ? 'left' : 'right']: '0.75rem',
+                  color: '#6c757d'
+                }}
               >
-                <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
-              </button>
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
             </div>
           </div>
 
           <div className="mb-3 text-end">
-            <Link to="/forgot-password" className="small">Mot de passe oublié ?</Link>
+            <Link to="/forgot-password" className="small">{t.forgotPassword}</Link>
           </div>
-          <button type="submit" className="btn btn-primary w-100 rounded-pill shadow-sm">Se connecter</button>
+          <button type="submit" className="btn btn-primary w-100 rounded-pill shadow-sm">{t.login}</button>
         </form>
 
         <div className="text-center mt-3">
-          <small>Vous n'avez pas de compte ? <Link to="/signup">S'inscrire</Link></small>
+          <small>{t.noAccount} <Link to="/signup">{t.signup}</Link></small>
         </div>
       </div>
     </div>

@@ -29,7 +29,7 @@ function App() {
           <Route path="/login" element={<Login language={language} />} />
         </Routes>
       </div>
-      <Footer />
+      <Footer language={language} />
     </Router>
   );
 }
